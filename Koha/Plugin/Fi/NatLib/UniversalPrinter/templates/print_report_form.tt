@@ -1,0 +1,87 @@
+[% USE raw %]
+[% USE Asset %]
+[% PROCESS 'i18n.inc' %]
+[% INCLUDE 'doc-head-open.inc' %]
+<title>Koha: [% metadata.plugin_name %]: Print report</title>
+[% INCLUDE 'doc-head-close.inc' %]
+</head>
+
+<body>
+[% INCLUDE 'header.inc' %]
+[% INCLUDE 'cat-search.inc' %]
+
+[% USE Branches %]
+[% USE AuthorisedValues %]
+[% USE ItemTypes %]
+
+[% WRAPPER 'sub-header.inc' %]
+    [% WRAPPER breadcrumbs %]
+        [% WRAPPER breadcrumb_item %]
+            <a href="/cgi-bin/koha/plugins/plugins-home.pl">Plugins</a>
+        [% END %]
+        [% WRAPPER breadcrumb_item %]
+            <a href="/cgi-bin/koha/plugins/run.pl?class=[% CLASS | uri %]&method=tool">[% metadata.plugin_name %]</a>
+        [% END %]
+        [% WRAPPER breadcrumb_item bc_active= 1 %]
+            <span>Print report</span>
+        [% END %]
+    [% END #/ WRAPPER breadcrumbs %]
+[% END #/ WRAPPER sub-header.inc %]
+
+<div class="main container-fluid">
+
+    <div class="page-header">
+        <h2>[% metadata.plugin_name %] Print report</h2>
+    </div>
+
+    <form method="get">
+        <input type="hidden" name="class" value="[% CLASS %]"/>
+        <input type="hidden" name="method" value="[% METHOD %]"/>
+
+        <input type="hidden" name="action" value="print_report" />
+
+        <fieldset class="rows">
+            <legend>Select holds queue</legend>
+            <ol>
+                <li>
+                    <label for="branchlimit">Library: </label>
+                    <select name="branchlimit" id="branchlimit">
+                        [% IF CAN_user_superlibrarian || !Koha.Preference('IndependentBranches') %]
+                            <option value="">All</option>
+                        [% END %]
+                        [% PROCESS options_for_libraries libraries => Branches.all( selected => branchlimit, only_from_group => 1 ) %]
+                    </select>
+                </li>
+                <li>
+                    <label for="itemtypeslimit">Item type: </label>
+                    <select name="itemtypeslimit" id="itemtypeslimit">
+                        <option value="">All</option>
+                        [% PROCESS options_for_item_types itemtypes => ItemTypes.Get(), selected_itemtype => itemtypeslimit %]
+                    </select>
+                </li>
+                <li>
+                    <label for="ccodeslimit">Collection: </label>
+                    <select name="ccodeslimit" id="ccodeslimit">
+                        <option value="">All</option>
+                        [% PROCESS options_for_authorised_values authorised_values => AuthorisedValues.GetAuthValueDropbox( 'CCODE' ), selected_av => ccodeslimit %]
+                    </select>
+                </li>
+                <li>
+                    <label for="locationslimit">Shelving location: </label>
+                    <select name="locationslimit" id="locationslimit">
+                        <option value="">All</option>
+                        [% PROCESS options_for_authorised_values authorised_values => AuthorisedValues.GetAuthValueDropbox( 'LOC' ), selected_av => locationslimit %]
+                    </select>
+                </li>
+            </ol>
+        </fieldset>
+
+        <fieldset class="action">
+            <button type="submit" class="btn btn-primary">
+                <i class="fa fa-print"></i> Print slips
+            </button>
+            <a href="?class=[% CLASS %]&method=[% METHOD %]">Cancel</a>
+        </fieldset>
+    </form>
+
+[% INCLUDE 'intranet-bottom.inc' %]
