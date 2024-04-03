@@ -2,39 +2,17 @@
     <input type="hidden" name="class" value="[% CLASS %]"/>
     <input type="hidden" name="method" value="[% METHOD %]"/>
 
-    <input type="hidden" name="action" value="print_report" />
+    <input type="hidden" name="action" value="print_reports" />
 
     <fieldset class="rows">
-        <legend>Select holds queue</legend>
+        <legend>Select report</legend>
         <ol>
             <li>
-                <label for="branchlimit">Library: </label>
-                <select name="branchlimit" id="branchlimit">
-                    [% IF CAN_user_superlibrarian || !Koha.Preference('IndependentBranches') %]
-                        <option value="">All</option>
+                <label for="report_id">Report: </label>
+                <select name="report_id" id="report_id">
+                    [% FOR report IN reports %]
+                        <option value="[% report.id %]">[% report.id %] - [% report.report_name %]</option>
                     [% END %]
-                    [% PROCESS options_for_libraries libraries => Branches.all( selected => branchlimit, only_from_group => 1 ) %]
-                </select>
-            </li>
-            <li>
-                <label for="itemtypeslimit">Item type: </label>
-                <select name="itemtypeslimit" id="itemtypeslimit">
-                    <option value="">All</option>
-                    [% PROCESS options_for_item_types itemtypes => ItemTypes.Get(), selected_itemtype => itemtypeslimit %]
-                </select>
-            </li>
-            <li>
-                <label for="ccodeslimit">Collection: </label>
-                <select name="ccodeslimit" id="ccodeslimit">
-                    <option value="">All</option>
-                    [% PROCESS options_for_authorised_values authorised_values => AuthorisedValues.GetAuthValueDropbox( 'CCODE' ), selected_av => ccodeslimit %]
-                </select>
-            </li>
-            <li>
-                <label for="locationslimit">Shelving location: </label>
-                <select name="locationslimit" id="locationslimit">
-                    <option value="">All</option>
-                    [% PROCESS options_for_authorised_values authorised_values => AuthorisedValues.GetAuthValueDropbox( 'LOC' ), selected_av => locationslimit %]
                 </select>
             </li>
         </ol>
@@ -42,7 +20,7 @@
 
     <fieldset class="action">
         <button type="submit" class="btn btn-primary">
-            <i class="fa fa-print"></i> Print slips
+            <i class="fa fa-print"></i> Print report
         </button>
         <a href="?class=[% CLASS %]&method=[% METHOD %]">Cancel</a>
     </fieldset>
