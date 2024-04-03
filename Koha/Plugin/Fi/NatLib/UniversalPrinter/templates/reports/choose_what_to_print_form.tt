@@ -27,11 +27,11 @@
         [% WRAPPER tabs_nav %]
 
             [% WRAPPER tab_item tabname= "reports" bt_active= 1 %]
-                <span>Reports</span>
+                <span>SQL Reports</span>
             [% END %]
 
-            [% WRAPPER tab_item tabname= "labelbatches" %]
-                <span>Label batches</span>
+            [% WRAPPER tab_item tabname= "labelsbatches" %]
+                <span>Labels</span>
             [% END %]
 
             [% WRAPPER tab_item tabname= "holdsqueue" %]
@@ -45,8 +45,8 @@
                 [% INCLUDE "reports/form_reports.inc" %]
             [% END # /tab_panel# %]
 
-            [% WRAPPER tab_panel tabname="labelbatches" %]
-                [% INCLUDE "reports/form_labelbatches.inc" %]
+            [% WRAPPER tab_panel tabname="labelsbatches" %]
+                [% INCLUDE "reports/form_labelsbatches.inc" %]
             [% END # /tab_panel# %]
 
             [% WRAPPER tab_panel tabname="holdsqueue" %]

@@ -32,17 +32,53 @@ our $metadata = {
 ## ----------------------------------------
 
 our $configuration = [
-    {   name => 'template',
+    {   name => 'reports_template',
         type => 'textarea',
         default => undef,
-        name_display => 'template',
-        description => 'asdfewr',
+        name_display => 'Reports Template',
+        description => '...',
     },
-    {   name => 'style',
+    {   name => 'reports_style',
         type => 'textarea',
         default => undef,
-        name_display => 'style',
-        description => 'wergwe',
+        name_display => 'Reports Style',
+        description => '...',
+    },
+    {   name => 'labelsbatches_template',
+        type => 'textarea',
+        default => undef,
+        name_display => 'Labels batches Template',
+        description => '...',
+    },
+    {   name => 'labelsbatches_style',
+        type => 'textarea',
+        default => undef,
+        name_display => 'Labels batches Style',
+        description => '...',
+    },
+    {   name => 'holdsqueue_template',
+        type => 'textarea',
+        default => undef,
+        name_display => 'Holds queue Template',
+        description => '...',
+    },
+    {   name => 'holdsqueue_style',
+        type => 'textarea',
+        default => undef,
+        name_display => 'Holds queue Style',
+        description => '...',
+    },
+    {   name => 'datatables_template',
+        type => 'textarea',
+        default => undef,
+        name_display => 'Datatables Template',
+        description => '...',
+    },
+    {   name => 'datatables_style',
+        type => 'textarea',
+        default => undef,
+        name_display => 'Datatables Style',
+        description => '...',
     },
     {   name => 'log_level',
         type => 'select',
@@ -84,13 +120,15 @@ sub upgrade   { my $self = shift; $self->{app}->preconfig($self);
     return $self->{app}->init_upgrade_plugin(@_);
 }
 
-sub cronjob_nightly { return shift->{app}->cronjob_nightly(@_); }
+# consider this should be enabled even no cron jobs you have, but if you want log to be cleaned nightly:
+#sub cronjob_nightly { return shift->{app}->cronjob_nightly(@_); }
 
-sub configure { return shift->{app}->configure_plugin(@_); }
-sub report    { return shift->{app}->runtime_report_mode(@_); }
-sub tool      { return shift->{app}->runtime_tool_mode(@_); }
+sub configure   { return shift->{app}->configure_plugin(@_); }
+sub report      { return shift->{app}->runtime_report_mode(@_); }
+# sub tool        { return shift->{app}->runtime_tool_mode(@_); }
+sub intranet_js { return shift->{app}->runtime_intranet_js(@_); }
 
-sub intranet_catalog_biblio_enhancements_toolbar_button { return shift->{app}->intra_biblio_tbbutton(@_); }
+# sub intranet_catalog_biblio_enhancements_toolbar_button { return shift->{app}->intra_biblio_tbbutton(@_); }
 
 
 # Almost predefined, required for breadcrumbs to work,
