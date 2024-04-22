@@ -92,22 +92,6 @@ sub runtime_report_mode {
                 report_template        => $template,
                 report_style           => $style,
             );
-        } elsif ( $cgi->param('action') eq 'print_datatables' ) {
-            my $template = $self->{config}{datatables_template};
-            my $style    = $self->{config}{datatables_style};
-
-            my $results_raw = $cgi->param('datatable_data');
-            my $url_path = $cgi->param('url_path');
-
-            my $results = JSON::decode_json($results_raw);
-
-            $page_template->param(
-                total                  => scalar @$results,
-                table_rows             => $results,
-                url_path               => $url_path,
-                report_template        => $template,
-                report_style           => $style,
-            );
         }
     }
     else {
