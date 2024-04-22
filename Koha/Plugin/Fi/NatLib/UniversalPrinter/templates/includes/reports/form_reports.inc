@@ -5,23 +5,14 @@
     <input type="hidden" name="action" value="print_reports" />
 
     <fieldset class="rows">
-        <legend>Select report</legend>
-        <ol>
-            <li>
-                <label for="report_id">Report: </label>
-                <select name="report_id" id="report_id">
-                    [% FOR report IN reports %]
-                        <option value="[% report.id %]">[% report.id %] - [% report.report_name %]</option>
-                    [% END %]
-                </select>
-            </li>
-        </ol>
+        <legend><a href="/cgi-bin/koha/reports/reports-home.pl">Go to reports section</a></legend>
+        <span>To print an SQL query using this plugin, navigate to the query page. <br>
+        After executing the desired query, a <b>[Universal Printer]</b> button will appear, allowing you to print the results of the query directly.</span>
     </fieldset>
 
-    <fieldset class="action">
+    <!-- <fieldset class="action">
         <button type="submit" class="btn btn-primary">
             <i class="fa fa-print"></i> Print report
         </button>
-        <a href="?class=[% CLASS %]&method=[% METHOD %]">Cancel</a>
-    </fieldset>
+    </fieldset> -->
 </form>
