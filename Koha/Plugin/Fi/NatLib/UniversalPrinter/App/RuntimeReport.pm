@@ -116,7 +116,7 @@ sub runtime_report_mode {
 sub execute_report {
     my $cgi = shift;
 
-    my $report_id   = $cgi->param('report_id');
+    my $report_id   = $cgi->param('reports');
     my @sql_params  = $cgi->multi_param('sql_params');
     my @param_names = $cgi->multi_param('param_name');
     my $limit       = $cgi->param('limit');
