@@ -20,17 +20,13 @@
 <div class="main container-fluid">
 
     <div class="page-header">
-        <h2>[% metadata.plugin_name %] Print report</h2>
+        <h2>[% metadata.plugin_name %]</h2>
     </div>
 
     [% WRAPPER tabs id= "universalprintreport" %]
         [% WRAPPER tabs_nav %]
 
-            [% WRAPPER tab_item tabname= "reports" bt_active= 1 %]
-                <span>SQL Reports</span>
-            [% END %]
-
-            [% WRAPPER tab_item tabname= "labelsbatches" %]
+            [% WRAPPER tab_item tabname= "labelsbatches"  bt_active= 1 %]
                 <span>Labels</span>
             [% END %]
 
@@ -38,20 +34,29 @@
                 <span>Holds queue</span>
             [% END %]
 
+            [% IF ( CAN_user_reports_execute_reports ) %]
+                [% WRAPPER tab_item tabname= "reports" %]
+                    <span>SQL Reports</span>
+                [% END %]
+            [% END %]
+
         [% END # /WRAPPER tabs_nav %]
+
         [% WRAPPER tab_panels %]
 
-            [% WRAPPER tab_panel tabname="reports" bt_active= 1 %]
-                [% INCLUDE "reports/form_reports.inc" %]
-            [% END # /tab_panel# %]
-
-            [% WRAPPER tab_panel tabname="labelsbatches" %]
+            [% WRAPPER tab_panel tabname="labelsbatches" bt_active= 1 %]
                 [% INCLUDE "reports/form_labelsbatches.inc" %]
-            [% END # /tab_panel# %]
+            [% END  %]
 
             [% WRAPPER tab_panel tabname="holdsqueue" %]
                 [% INCLUDE "reports/form_holdsqueue.inc" %]
-            [% END # /tab_panel# %]
+            [% END %]
+
+            [% IF ( CAN_user_reports_execute_reports ) %]
+                [% WRAPPER tab_panel tabname="reports" %]
+                    [% INCLUDE "reports/form_reports.inc" %]
+                [% END %]
+            [% END %]
 
         [% END # /WRAPPER tab_panels %]
     [% END # /WRAPPER tabs %]
