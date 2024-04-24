@@ -33,6 +33,10 @@ sub runtime_report_mode {
             my $template = $self->{config}{reports_template};
             my $style    = $self->{config}{reports_style};
 
+            unless (C4::Auth::haspermission(C4::Context->userenv->{id},{ reports =>'execute_reports' })) {
+                die;
+            }
+
             my $results = execute_report($cgi);
 
             $page_template->param(
