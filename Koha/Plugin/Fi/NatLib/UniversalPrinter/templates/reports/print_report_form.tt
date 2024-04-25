@@ -13,6 +13,7 @@
 [% USE Branches %]
 [% USE AuthorisedValues %]
 [% USE ItemTypes %]
+[% PROCESS 'html_helpers.inc' %]
 
 [% INCLUDE 'plugin_breadcrumbs.inc' active_text='Print report' %]
 
@@ -22,54 +23,37 @@
         <h2>[% metadata.plugin_name %] Print report</h2>
     </div>
 
-    <form method="get">
-        <input type="hidden" name="class" value="[% CLASS %]"/>
-        <input type="hidden" name="method" value="[% METHOD %]"/>
+    [% WRAPPER tabs id= "universalprintreport" %]
+        [% WRAPPER tabs_nav %]
 
-        <input type="hidden" name="action" value="print_report" />
+            [% WRAPPER tab_item tabname= "reports" bt_active= 1 %]
+                <span>Reports</span>
+            [% END %]
 
-        <fieldset class="rows">
-            <legend>Select holds queue</legend>
-            <ol>
-                <li>
-                    <label for="branchlimit">Library: </label>
-                    <select name="branchlimit" id="branchlimit">
-                        [% IF CAN_user_superlibrarian || !Koha.Preference('IndependentBranches') %]
-                            <option value="">All</option>
-                        [% END %]
-                        [% PROCESS options_for_libraries libraries => Branches.all( selected => branchlimit, only_from_group => 1 ) %]
-                    </select>
-                </li>
-                <li>
-                    <label for="itemtypeslimit">Item type: </label>
-                    <select name="itemtypeslimit" id="itemtypeslimit">
-                        <option value="">All</option>
-                        [% PROCESS options_for_item_types itemtypes => ItemTypes.Get(), selected_itemtype => itemtypeslimit %]
-                    </select>
-                </li>
-                <li>
-                    <label for="ccodeslimit">Collection: </label>
-                    <select name="ccodeslimit" id="ccodeslimit">
-                        <option value="">All</option>
-                        [% PROCESS options_for_authorised_values authorised_values => AuthorisedValues.GetAuthValueDropbox( 'CCODE' ), selected_av => ccodeslimit %]
-                    </select>
-                </li>
-                <li>
-                    <label for="locationslimit">Shelving location: </label>
-                    <select name="locationslimit" id="locationslimit">
-                        <option value="">All</option>
-                        [% PROCESS options_for_authorised_values authorised_values => AuthorisedValues.GetAuthValueDropbox( 'LOC' ), selected_av => locationslimit %]
-                    </select>
-                </li>
-            </ol>
-        </fieldset>
+            [% WRAPPER tab_item tabname= "labelbatches" %]
+                <span>Label batches</span>
+            [% END %]
 
-        <fieldset class="action">
-            <button type="submit" class="btn btn-primary">
-                <i class="fa fa-print"></i> Print slips
-            </button>
-            <a href="?class=[% CLASS %]&method=[% METHOD %]">Cancel</a>
-        </fieldset>
-    </form>
+            [% WRAPPER tab_item tabname= "holdsqueue" %]
+                <span>Holds queue</span>
+            [% END %]
+
+        [% END # /WRAPPER tabs_nav %]
+        [% WRAPPER tab_panels %]
+
+            [% WRAPPER tab_panel tabname="reports" bt_active= 1 %]
+                [% INCLUDE "reports/form_reports.inc" %]
+            [% END # /tab_panel# %]
+
+            [% WRAPPER tab_panel tabname="labelbatches" %]
+                [% INCLUDE "reports/form_labelbatches.inc" %]
+            [% END # /tab_panel# %]
+
+            [% WRAPPER tab_panel tabname="holdsqueue" %]
+                [% INCLUDE "reports/form_holdsqueue.inc" %]
+            [% END # /tab_panel# %]
+
+        [% END # /WRAPPER tab_panels %]
+    [% END # /WRAPPER tabs %]
 
 [% INCLUDE 'intranet-bottom.inc' %]
