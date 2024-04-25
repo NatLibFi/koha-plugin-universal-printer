@@ -18,35 +18,40 @@ sub runtime_report_mode {
     my ( $self, $args ) = @_;
     my $cgi = $self->{plugin}{cgi};
 
-    if ( $cgi->param('action') && $cgi->param('action') eq 'print_report' ) {
+    if ( $cgi->param('action') ) {
+        if ( $cgi->param('action') eq 'print_reports' ) {
+            my $template = $self->{config}{template};
+            my $style    = $self->{config}{style};
 
-        my $template = $self->{config}{template};
-        my $style    = $self->{config}{style};
+            my $branchlimit     = $cgi->param('branchlimit');
+            my $itemtypeslimit  = $cgi->param('itemtypeslimit');
+            my $ccodeslimit     = $cgi->param('ccodeslimit');
+            my $locationslimit  = $cgi->param('locationslimit');
 
-        my $branchlimit     = $cgi->param('branchlimit');
-        my $itemtypeslimit  = $cgi->param('itemtypeslimit');
-        my $ccodeslimit     = $cgi->param('ccodeslimit');
-        my $locationslimit  = $cgi->param('locationslimit');
+            # my $results = Koha::Items->search({ itemnumber => 273 });
 
-        # my $items = Koha::Items->search({ itemnumber => 273 });
+            my $results = GetHoldsQueueItems(
+                {
+                    branchlimit    => $branchlimit,
+                    itemtypeslimit => $itemtypeslimit,
+                    ccodeslimit    => $ccodeslimit,
+                    locationslimit => $locationslimit
+                }
+            );
 
-        my $items = GetHoldsQueueItems(
-            {
-                branchlimit    => $branchlimit,
-                itemtypeslimit => $itemtypeslimit,
-                ccodeslimit    => $ccodeslimit,
-                locationslimit => $locationslimit
-            }
-        );
-
-        $self->report_print(
-            {
-                total           => $items->count,
-                items           => $items->as_list // [],
-                template        => $template,
-                style           => $style,
-            }
-        );
+            $self->report_print(
+                {
+                    total           => $results->count,
+                    results        => $results->as_list // [],
+                    template        => $template,
+                    style           => $style,
+                }
+            );
+        } elsif ( $cgi->param('action') eq 'print_labels' ) {
+            ...
+        } elsif ( $cgi->param('action') eq 'print_holdsqueue' ) {
+            ...
+        }
     }
     else {
         $self->report_data_form();
@@ -63,7 +68,7 @@ sub report_print {
     my $template           = $args->{template};
     my $style              = $args->{style};
 
-    my $page_template = $self->get_template( { file => 'templates/print_report.tt' } );
+    my $page_template = $self->get_template( { file => 'templates/reports/print_report.tt' } );
 
     # use Data::Dumper (); warn Data::Dumper->new( [{
     #      items => $items,
@@ -84,7 +89,7 @@ sub report_print {
 sub report_data_form {
     my ( $self, $args ) = @_;
 
-    my $template = $self->get_template( { file => 'templates/print_report_form.tt' } );
+    my $template = $self->get_template( { file => 'templates/reports/print_report_form.tt' } );
 
     $self->output_html( $template->output() );
 }
