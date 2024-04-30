@@ -8,10 +8,8 @@ use Koha::Cache;
 use base qw(
     Koha::Plugin::Fi::NatLib::UniversalPrinter::App::Initiate
     Koha::Plugin::Fi::NatLib::UniversalPrinter::App::RuntimeReport
-    Koha::Plugin::Fi::NatLib::UniversalPrinter::App::RuntimeTool
     Koha::Plugin::Fi::NatLib::UniversalPrinter::App::RuntimeIntranetJS
-    Koha::Plugin::Fi::NatLib::UniversalPrinter::App::Interface
-    Koha::Plugin::Fi::NatLib::UniversalPrinter::App::Crontab
+    Koha::Plugin::Fi::NatLib::UniversalPrinter::App::Defaults
 );
 
 sub new {
