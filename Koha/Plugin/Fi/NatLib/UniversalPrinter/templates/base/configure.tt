@@ -53,35 +53,35 @@
                     [% CASE 'checkbox' %]
                         <input type="checkbox" name="[% config.name %]" value="1" [% IF config.value %]checked="checked"[% END %] />
                     [% CASE 'textarea' %]
-                        <textarea name="[% config.name %]" class="form-control" rows="5">[% config.value %]</textarea>
+                        <textarea name="[% config.name %]" class="form-control" rows="5">[% config.value | html %]</textarea>
                     [% CASE 'password' %]
-                        <input type="password" class="form-control" name="[% config.name %]" value="[% config.value %]" />
+                        <input type="password" class="form-control" name="[% config.name %]" value="[% config.value | html %]" />
                     [% CASE 'text' %]
-                        <input type="text" class="form-control" name="[% config.name %]" value="[% config.value %]" />
+                        <input type="text" class="form-control" name="[% config.name %]" value="[% config.value | html %]" />
                     [% CASE 'number' %]
-                        <input type="number" class="form-control" name="[% config.name %]" value="[% config.value %]" />
+                        <input type="number" class="form-control" name="[% config.name %]" value="[% config.value | html %]" />
                     [% CASE 'date' %]
-                        <input type="date" class="form-control" name="[% config.name %]" value="[% config.value %]" />
+                        <input type="date" class="form-control" name="[% config.name %]" value="[% config.value | html %]" />
                     [% CASE 'time' %]
-                        <input type="time" class="form-control" name="[% config.name %]" value="[% config.value %]" />
+                        <input type="time" class="form-control" name="[% config.name %]" value="[% config.value | html %]" />
                     [% CASE 'datetime' %]
-                        <input type="datetime-local" class="form-control" name="[% config.name %]" value="[% config.value %]" />
+                        <input type="datetime-local" class="form-control" name="[% config.name %]" value="[% config.value | html %]" />
                     [% CASE 'email' %]
-                        <input type="email" class="form-control" name="[% config.name %]" value="[% config.value %]" />
+                        <input type="email" class="form-control" name="[% config.name %]" value="[% config.value | html %]" />
                     [% CASE 'url' %]
-                        <input type="url" class="form-control" name="[% config.name %]" value="[% config.value %]" />
+                        <input type="url" class="form-control" name="[% config.name %]" value="[% config.value | html %]" />
                     [% CASE 'tel' %]
-                        <input type="tel" class="form-control" name="[% config.name %]" value="[% config.value %]" />
+                        <input type="tel" class="form-control" name="[% config.name %]" value="[% config.value | html %]" />
                     [% CASE 'color' %]
-                        <input type="color" class="form-control" name="[% config.name %]" value="[% config.value %]" />
+                        <input type="color" class="form-control" name="[% config.name %]" value="[% config.value | html %]" />
                     [% CASE 'range' %]
-                        <input type="range" class="form-control" name="[% config.name %]" value="[% config.value %]" />
+                        <input type="range" class="form-control" name="[% config.name %]" value="[% config.value | html %]" />
                     [% CASE 'hidden' %]
-                        <input type="hidden" name="[% config.name %]" value="[% config.value %]" />
+                        <input type="hidden" name="[% config.name %]" value="[% config.value | html %]" />
                     [% CASE 'file' %]
-                        <input type="file" class="form-control" name="[% config.name %]" value="[% config.value %]" />
+                        <input type="file" class="form-control" name="[% config.name %]" value="[% config.value | html %]" />
                     [% CASE 'image' %]
-                        <input type="image" class="form-control" name="[% config.name %]" value="[% config.value %]" />
+                        <input type="image" class="form-control" name="[% config.name %]" value="[% config.value | html %]" />
                     [% CASE 'radiobuttons' %]
                         [% FOREACH option IN config.options %]
                             <div class="radio">
@@ -92,7 +92,7 @@
                             </div>
                         [% END %]
                     [% CASE 'tel' %]
-                        <input type="tel" class="form-control" name="[% config.name %]" value="[% config.value %]" />
+                        <input type="tel" class="form-control" name="[% config.name %]" value="[% config.value | html %]" />
                     [% CASE %]
                         <b>WARNING:</b> Unknown field type: [% config.type %]
                 [% END %]
