@@ -95,15 +95,16 @@ sub runtime_report_mode {
             foreach my $r (@{$results->as_list // []}) {
                 my $record = $r->biblio->metadata->record;
                 my @series;
-                foreach my $field ( $record->field('4..') ) {
-                    next unless $field->tag() >= 440 && $field->tag() <= 490;
-                    my @subfields = $field->subfields();
-                    for my $series_subfield (@subfields) {
-                        next if ( $series_subfield->[0] eq '9' );
-                        next if ( $series_subfield->[0] eq 'v' );
-                        push @series, $series_subfield->[1];
-                    }
+
+                my %found_av_pairs_tags_data;
+                foreach my $field ($record->field('490', '830')) {
+                    my @v_subs = $field->subfield('v');
+                    next unless @v_subs;
+                    my @a_subs = $field->subfield('a');
+                    next unless @a_subs;
+                    push @{$found_av_pairs_tags_data{$field->tag}}, $a_subs[$#a_subs], $v_subs[$#v_subs];
                 }
+                @series = @{$found_av_pairs_tags_data{'830'} || $found_av_pairs_tags_data{'490'} || []};
 
                 push @all_results, {
                     barcode => $r->barcode,
