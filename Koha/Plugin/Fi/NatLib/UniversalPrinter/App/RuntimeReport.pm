@@ -90,9 +90,40 @@ sub runtime_report_mode {
                 }
             );
 
+            my @all_results;
+
+            foreach my $r (@{$results->as_list // []}) {
+                my $record = $r->biblio->metadata->record;
+                my @series;
+                foreach my $field ( $record->field('4..') ) {
+                    next unless $field->tag() >= 440 && $field->tag() <= 490;
+                    my @subfields = $field->subfields();
+                    for my $series_subfield (@subfields) {
+                        next if ( $series_subfield->[0] eq '9' );
+                        next if ( $series_subfield->[0] eq 'v' );
+                        push @series, $series_subfield->[1];
+                    }
+                }
+
+                push @all_results, {
+                    barcode => $r->barcode,
+                    biblio => $r->biblio,
+                    cardnumber => $r->cardnumber,
+                    firstname => $r->firstname,
+                    item => $r->item,
+                    itemcallnumber => $r->itemcallnumber,
+                    notes => $r->notes,
+                    patron => $r->patron,
+                    pickbranch => $r->pickbranch,
+                    reservedate => $r->reservedate,
+                    surname => $r->surname,
+                    seriesarray => \@series,
+                };
+            }
+
             $page_template->param(
-                total                  => $results->count,
-                queue_items            => $results->as_list // [],
+                total                  => scalar @all_results,
+                queue_items            => \@all_results,
                 report_template        => $template,
                 report_style           => $style,
             );
