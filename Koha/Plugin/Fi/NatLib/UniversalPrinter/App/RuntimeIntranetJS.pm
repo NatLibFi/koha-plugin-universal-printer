@@ -44,7 +44,9 @@ sub runtime_intranet_js {
                     }
 
                     // Add allowed URL parameters to the form
-                    const allowed_params = ['reports', 'param_name', 'sql_params'];
+                    //   'reports' for Koha <= 23.11
+                    //   'id' for Koha >= 24.05
+                    const allowed_params = ['reports', 'id', 'param_name', 'sql_params'];
                     urlParams.forEach(function(value, key) {
                         if (allowed_params.includes(key)) {
                             $('<input>').attr({
