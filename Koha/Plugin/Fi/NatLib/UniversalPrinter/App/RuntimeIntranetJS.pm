@@ -9,7 +9,7 @@ use Modern::Perl; use utf8; use open qw(:utf8);
 sub runtime_intranet_js {
     my ( $self ) = @_;
 
-    return q|<script>
+    return q!<script>
 
             function attachSelfToReporttable(reportTableId) {
                 var reportTable = $('#' + reportTableId); // Use the passed ID to select the element
@@ -31,8 +31,8 @@ sub runtime_intranet_js {
                     var actionValue = reportTableId === 'toolbar' ? 'print_reports' : 'print_holdsqueue';
 
                     // Add additional parameters for holdst_wrapper from URL, if needed
-                    $('<input>').attr({ type: 'hidden', name: 'class', value: '|.$self->{plugin}{metadata}{class}.q|' }).appendTo(form);
-                    $('<input>').attr({ type: 'hidden', name: 'csrf_token', value: '|.$self->GenerateCSRF().q|' }).appendTo(form);
+                    $('<input>').attr({ type: 'hidden', name: 'class', value: '!.$self->{plugin}{metadata}{class}.q!' }).appendTo(form);
+                    $('<input>').attr({ type: 'hidden', name: 'csrf_token', value: '!.$self->GenerateCSRF().q!' }).appendTo(form);
                     $('<input>').attr({ type: 'hidden', name: 'method', value: 'report' }).appendTo(form);
                     $('<input>').attr({ type: 'hidden', name: 'action', value: actionValue }).appendTo(form);
 
@@ -69,9 +69,10 @@ sub runtime_intranet_js {
             // Determine the page and element ID based on the URL
             var path = window.location.pathname;
             var urlParams = new URLSearchParams(window.location.search);
-            var phase = urlParams.get('phase');
+            var phase = urlParams.get('phase'); // Koha <= 23.11
+            var op = urlParams.get('op');       // Koha >= 24.05
             var targetId = path.includes('view_holdsqueue.pl') ? 'holdst_wrapper' :
-                           (path.includes('guided_reports.pl') && phase === 'Run this report') ? 'toolbar' : undefined;
+                           (path.includes('guided_reports.pl') && (phase === 'Run this report' || op === 'run')) ? 'toolbar' : undefined;
 
             if (targetId) {
                 attachSelfToReporttable(targetId);
@@ -82,7 +83,7 @@ sub runtime_intranet_js {
             attachSelfToReporttable();
         });
 
-    </script>|;
+    </script>!;
 }
 
 1;
