@@ -32,7 +32,8 @@ sub runtime_intranet_js {
 
                     // Add additional parameters for holdst_wrapper from URL, if needed
                     $('<input>').attr({ type: 'hidden', name: 'class', value: '!.$self->{plugin}{metadata}{class}.q!' }).appendTo(form);
-                    $('<input>').attr({ type: 'hidden', name: 'csrf_token', value: '!.$self->GenerateCSRF().q!' }).appendTo(form);
+                    // Use the CSRF token Koha already renders for this session
+                    $('<input>').attr({ type: 'hidden', name: 'csrf_token', value: $('meta[name="csrf-token"]').attr('content') }).appendTo(form);
                     $('<input>').attr({ type: 'hidden', name: 'method', value: 'report' }).appendTo(form);
                     $('<input>').attr({ type: 'hidden', name: 'action', value: actionValue }).appendTo(form);
 
